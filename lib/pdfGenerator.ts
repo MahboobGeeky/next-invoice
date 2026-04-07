@@ -248,7 +248,7 @@ export async function generateInvoicePDF(invoice: IInvoice): Promise<Buffer> {
       "Invoice No.",
       String(invoice.invNo || ""),
       "Dated",
-      formatDate(invoice.date),
+      String(invoice.date).split("-").reverse().join("-"),
     ],
     [
       "Supplier Inv No.",
