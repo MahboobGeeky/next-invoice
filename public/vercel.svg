@@ -1,1 +1,39 @@
-<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+<svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Gradient defs -->
+  <defs>
+    <linearGradient id="gradBlueGreen" x1="0" y1="0" x2="140" y2="140">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+
+    <linearGradient id="gradGreen" x1="0" y1="0" x2="140" y2="140">
+      <stop offset="0%" stop-color="#22C55E"/>
+      <stop offset="100%" stop-color="#16A34A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Back document -->
+  <rect x="20" y="35" width="70" height="80" rx="12" fill="url(#gradBlueGreen)" opacity="0.6"/>
+
+  <!-- Middle document -->
+  <rect x="30" y="25" width="75" height="85" rx="12" fill="url(#gradBlueGreen)" opacity="0.8"/>
+
+  <!-- Front document -->
+  <rect x="40" y="15" width="75" height="90" rx="14" fill="white" stroke="url(#gradBlueGreen)" stroke-width="3"/>
+
+  <!-- Fold corner -->
+  <path d="M90 15 L115 40 L90 40 Z" fill="#2563EB"/>
+
+  <!-- Dollar sign -->
+  <text x="78" y="48" text-anchor="middle" font-size="22" font-weight="bold" fill="#22C55E" font-family="Arial">$</text>
+
+  <!-- Lines -->
+  <rect x="55" y="60" width="45" height="5" rx="3" fill="url(#gradBlueGreen)"/>
+  <rect x="55" y="70" width="45" height="5" rx="3" fill="url(#gradBlueGreen)"/>
+  <rect x="55" y="80" width="30" height="5" rx="3" fill="url(#gradBlueGreen)"/>
+
+  <!-- Checkmark -->
+  <path d="M65 95 L80 110 L110 75" stroke="url(#gradGreen)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>
