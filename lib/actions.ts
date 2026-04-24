@@ -43,11 +43,11 @@ export async function updateUserProfile(data: Partial<IUserProfile>) {
 
 /**
  * Get the next suggested invoice number for the user
- * Increments the last numeric invoice found or starts at 101
+ * Increments the last numeric invoice found or starts at 1
  */
 export async function getNextInvoiceNo() {
   const session = await getServerSession(authOptions);
-  if (!session?.user) return "101";
+  if (!session?.user) return "1";
 
   await dbConnect();
   
@@ -59,7 +59,7 @@ export async function getNextInvoiceNo() {
     .lean();
 
   if (!lastInvoice) {
-    return "101"; // Default starting number
+    return "1"; // Default starting number
   }
 
   const lastNo = lastInvoice.invNo;
@@ -71,5 +71,5 @@ export async function getNextInvoiceNo() {
     return lastNo.replace(match[0], nextVal.toString());
   }
 
-  return (parseInt(lastNo) + 1).toString() || "101";
+  return (parseInt(lastNo) + 1).toString() || "1";
 }

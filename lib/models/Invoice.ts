@@ -35,6 +35,7 @@ export interface IInvoice {
   moisPercent: number;
   moisDedQty: number;
   moisDed: number;
+  moisData?: number;
   finalNetQty: number;
   deductions: Deduction[];
   gross: number;
@@ -79,6 +80,7 @@ const InvoiceSchema = new Schema<IInvoice>({
   moisPercent: { type: Number, default: 0 },
   moisDedQty: { type: Number, default: 0 },
   moisDed: { type: Number, default: 0 },
+  moisData: { type: Number, default: null },
   finalNetQty: { type: Number, default: 0 },
   deductions: [DeductionSchema],
   gross: { type: Number, required: true },
@@ -87,4 +89,7 @@ const InvoiceSchema = new Schema<IInvoice>({
 }, { timestamps: true });
 
 // Check if model exists to handle HMR
-export const Invoice: Model<IInvoice> = mongoose.models.Invoice || mongoose.model<IInvoice>("Invoice", InvoiceSchema);
+if (mongoose.models.Invoice) {
+  delete mongoose.models.Invoice;
+}
+export const Invoice: Model<IInvoice> = mongoose.model<IInvoice>("Invoice", InvoiceSchema);

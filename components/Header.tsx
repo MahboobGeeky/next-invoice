@@ -36,26 +36,26 @@ export default function Header() {
       <nav className="nav-tabs">
         {session ? (
           <>
-            <Link 
-              href="/create" 
+            <Link
+              href="/create"
               className={`nav-tab ${pathname === '/create' ? 'active' : ''}`}
             >
               ＋ Create Invoice
             </Link>
-            <Link 
-              href="/view" 
+            <Link
+              href="/view"
               className={`nav-tab ${pathname === '/view' ? 'active' : ''}`}
             >
               ▤ View Records
             </Link>
-            <Link 
-              href="/profile" 
+            <Link
+              href="/profile"
               className={`nav-tab ${pathname === '/profile' ? 'active' : ''}`}
             >
               ⚙ Profile Settings
             </Link>
-            <button 
-              className="nav-tab" 
+            <button
+              className="nav-tab"
               onClick={() => signOut()}
               style={{ border: '1px solid rgba(255,100,100,0.3)', color: 'rgba(255,200,200,0.8)' }}
             >
@@ -64,14 +64,14 @@ export default function Header() {
           </>
         ) : (
           <>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className={`nav-tab ${pathname === '/' ? 'active' : ''}`}
             >
               ▤ Lookup
             </Link>
-            <Link 
-              href="/login" 
+            <Link
+              href="/login"
               className={`nav-tab ${pathname === '/login' ? 'active' : ''}`}
             >
               Sign In

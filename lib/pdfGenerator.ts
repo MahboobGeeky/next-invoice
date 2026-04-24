@@ -280,17 +280,18 @@ export async function generateInvoicePDF(invoice: IInvoice): Promise<Buffer> {
     align: "left" | "center" | "right";
   }[] = [
     { label: "SI\nNo.", width: 18, align: "center" },
-    { label: "Description\nof Goods", width: 110, align: "left" },
+    { label: "Description\nof Goods", width: 85, align: "left" },
     { label: "Bag", width: 32, align: "center" },
-    { label: "Quantity", width: 52, align: "right" },
+    { label: "Quantity", width: 47, align: "right" },
     { label: "Rate", width: 38, align: "right" },
     { label: "Net\nWeight", width: 52, align: "right" },
     { label: "Stand\n%", width: 28, align: "center" },
     { label: "Stand\nDed.", width: 38, align: "right" },
     { label: "Mois.\n%", width: 26, align: "center" },
     { label: "Mois.\nDed.", width: 36, align: "right" },
+    { label: "Mois.\nData", width: 35, align: "right" },
     { label: "Total", width: 48, align: "right" },
-    { label: "Amount", width: 61, align: "right" },
+    { label: "Amount", width: 56, align: "right" },
   ];
 
   const headerH = 26;
@@ -335,6 +336,7 @@ export async function generateInvoicePDF(invoice: IInvoice): Promise<Buffer> {
     String((invoice as any).standDedQty || ""),
     String((invoice as any).moisPercent || ""),
     String((invoice as any).moisDedQty || ""),
+    (invoice as any).moisData != null ? String((invoice as any).moisData) : "",
     fnqVal.toLocaleString("en-IN"),
     fmt(fnqVal * rateVal), // ✅ FIXED: was fmt(invoice.gross)
   ];
@@ -386,8 +388,9 @@ export async function generateInvoicePDF(invoice: IInvoice): Promise<Buffer> {
         null,                                           // 7: Stand Ded.
         null,                                           // 8: Mois. %
         null,                                           // 9: Mois. Ded.
-        null,                                           // 10: Total
-        "(-) " + fmt(d.amt),                           // 11: Amount
+        null,                                           // 10: Mois. Data
+        null,                                           // 11: Total
+        "(-) " + fmt(d.amt),                           // 12: Amount
       ];
 
       for (let i = 0; i < cols.length; i++) {
@@ -430,6 +433,7 @@ export async function generateInvoicePDF(invoice: IInvoice): Promise<Buffer> {
     qtyVal.toLocaleString("en-IN"),
     null,
     nwVal.toLocaleString("en-IN"),
+    null,
     null,
     null,
     null,

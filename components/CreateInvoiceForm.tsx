@@ -11,7 +11,7 @@ const DEFAULT_DEDUCTIONS: Deduction[] = [
   { desc: "DAMAGE BAG", bags: "", rate: "", amt: 0 },
   { desc: "GADDI CHARGE", bags: "", rate: "", amt: 0 },
   { desc: "BADSHAH BROKER", bags: "", rate: "", amt: 0 },
-  { desc: "BANK EXP", bags: "", rate: "", amt: 0 },
+  { desc: "BANK RTGS", bags: "", rate: "", amt: 0 },
   { desc: "CD 1%", bags: "", rate: "", amt: 0 },
 ];
 
@@ -47,6 +47,11 @@ export default function CreateInvoiceForm({
   const [moisKg, setMoisKg] = useState(
     (initialData as any).moisDedQty
       ? String((initialData as any).moisDedQty)
+      : "",
+  );
+  const [moisData, setMoisData] = useState(
+    (initialData as any).moisData != null
+      ? String((initialData as any).moisData)
       : "",
   );
 
@@ -114,6 +119,23 @@ export default function CreateInvoiceForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nw]);
 
+  // ─── Prevent scroll wheel from changing number inputs ───────
+  useEffect(() => {
+    const handleWheel = () => {
+      if (document.activeElement?.tagName === "INPUT") {
+        const input = document.activeElement as HTMLInputElement;
+        if (input.type === "number") {
+          input.blur();
+        }
+      }
+    };
+
+    document.addEventListener("wheel", handleWheel, { passive: true });
+    return () => {
+      document.removeEventListener("wheel", handleWheel);
+    };
+  }, []);
+
   // ─── Generic input helper ───────────────────────────────────
   const handleInputChange = (field: keyof IInvoice, value: any) =>
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -166,6 +188,7 @@ export default function CreateInvoiceForm({
         moisPercent: parseFloat(moisPct) || 0,
         moisDedQty: mKg,
         moisDed: moisDedAmt, // ₹ amount
+        moisData: moisData !== "" ? parseFloat(moisData) : null,
         finalNetQty,
         gross,
         otherDeduct,
@@ -467,6 +490,18 @@ export default function CreateInvoiceForm({
                 onChange={(e) => onMoisKg(e.target.value)}
                 step="0.01"
                 placeholder="Enter kg"
+              />
+            </div>
+
+            {/* Mois Data (No Calculation) */}
+            <div className="field">
+              <label>Mois. Data</label>
+              <input
+                type="number"
+                value={moisData}
+                onChange={(e) => setMoisData(e.target.value)}
+                step="0.01"
+                placeholder="Enter value"
               />
             </div>
 

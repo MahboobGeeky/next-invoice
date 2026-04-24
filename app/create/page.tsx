@@ -12,7 +12,7 @@ const DEFAULT_DEDUCTIONS: Deduction[] = [
   { desc: 'DAMAGE BAG', bags: '', rate: '', amt: 0 },
   { desc: 'GADDI CHARGE', bags: '', rate: '', amt: 0 },
   { desc: 'BADSHAH BROKER', bags: '', rate: '', amt: 0 },
-  { desc: 'BANK EXP', bags: '', rate: '', amt: 0 },
+  { desc: 'BANK RTGS', bags: '', rate: '', amt: 0 },
   { desc: 'CD 1%', bags: '', rate: '', amt: 0 },
 ];
 
