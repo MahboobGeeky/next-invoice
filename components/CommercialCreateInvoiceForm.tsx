@@ -19,6 +19,7 @@ export default function CommercialCreateInvoiceForm({
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState<Partial<ICommercialInvoice>>(initialData);
+  const [isEditingBank, setIsEditingBank] = useState(false);
 
   // Helper to init items and deductions if they don't exist
   useEffect(() => {
@@ -344,7 +345,7 @@ export default function CommercialCreateInvoiceForm({
             <tbody>
               {['moisture', 'dhalta', 'labour', 'cutBags', 'extra'].map((key) => {
                 const k = key as keyof ICommercialInvoice['qualityDeductions'];
-                const label = key.charAt(0).toUpperCase() + key.slice(1);
+                const label = key === 'dhalta' ? 'DD' : key.charAt(0).toUpperCase() + key.slice(1);
                 return (
                   <tr key={key}>
                     <td>{label}</td>
@@ -374,41 +375,60 @@ export default function CommercialCreateInvoiceForm({
         <div className="grid-2" style={{ marginBottom: "2rem" }}>
           
           <div className="form-card" style={{ margin: 0 }}>
-            <div className="card-label">Bank Details</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div className="field">
-                <label>Bank Name</label>
-                <input
-                  type="text"
-                  value={formData.bankName || ""}
-                  onChange={(e) => handleInputChange("bankName", e.target.value)}
-                />
-              </div>
-              <div className="field">
-                <label>Branch (Optional)</label>
-                <input
-                  type="text"
-                  value={formData.bankBranch || ""}
-                  onChange={(e) => handleInputChange("bankBranch", e.target.value)}
-                />
-              </div>
-              <div className="field">
-                <label>A/C NO.</label>
-                <input
-                  type="text"
-                  value={formData.bankAc || ""}
-                  onChange={(e) => handleInputChange("bankAc", e.target.value)}
-                />
-              </div>
-              <div className="field">
-                <label>IFSC CODE</label>
-                <input
-                  type="text"
-                  value={formData.bankIfsc || ""}
-                  onChange={(e) => handleInputChange("bankIfsc", e.target.value)}
-                />
-              </div>
+            <div className="card-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>Bank Details</span>
+              <button 
+                type="button" 
+                onClick={() => setIsEditingBank(!isEditingBank)}
+                style={{ fontSize: '0.8rem', padding: '2px 8px', background: 'transparent', border: '1px solid var(--border)', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                {isEditingBank ? 'Done' : 'Edit'}
+              </button>
             </div>
+            
+            {!isEditingBank ? (
+              <div style={{ padding: '10px 0', lineHeight: '1.8' }}>
+                <div style={{ fontWeight: 'bold' }}>{formData.bankName}</div>
+                <div>{formData.bankBranch}</div>
+                <div>A/C. NO.: {formData.bankAc}</div>
+                <div>IFS CODE : {formData.bankIfsc}</div>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div className="field">
+                  <label>Bank Name</label>
+                  <input
+                    type="text"
+                    value={formData.bankName || ""}
+                    onChange={(e) => handleInputChange("bankName", e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <label>Branch (Optional)</label>
+                  <input
+                    type="text"
+                    value={formData.bankBranch || ""}
+                    onChange={(e) => handleInputChange("bankBranch", e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <label>A/C NO.</label>
+                  <input
+                    type="text"
+                    value={formData.bankAc || ""}
+                    onChange={(e) => handleInputChange("bankAc", e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <label>IFSC CODE</label>
+                  <input
+                    type="text"
+                    value={formData.bankIfsc || ""}
+                    onChange={(e) => handleInputChange("bankIfsc", e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>

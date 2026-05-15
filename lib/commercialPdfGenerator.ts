@@ -58,22 +58,43 @@ export async function generateCommercialInvoicePDF(invoice: ICommercialInvoice):
   const black = rgb(0, 0, 0);
 
   // --- Header ---
-  let currentY = 40;
+  let currentY = 25;
+  const headerHeight = 95;
+  
+  // Outer Box
+  rect(margin, currentY, contentWidth, headerHeight);
+  // Double line at the bottom
+  hLine(margin, currentY + headerHeight + 3, contentWidth, 0.5);
 
-  drawTextCenter("M/s. WISHWAS TRADERS", margin, contentWidth, currentY + 18, 22, fontBold);
-  currentY += 35;
-
-  drawTextCenter("FOOD GRAIN MERCHANT", margin, contentWidth, currentY + 8, 10, fontBold);
   currentY += 15;
+  
+  // Top Left
+  drawText("T. L. NO.: TLB01947/00", margin + 5, currentY, 9, font);
+  drawText("PAN NO.: DFMPB6888H", margin + 5, currentY + 12, 9, font);
 
-  drawTextCenter("GULABBAGH - 854326, PURNEA, STATE - BIHAR, CODE - 10", margin, contentWidth, currentY + 8, 9, font);
-  currentY += 15;
+  // Top Center
+  drawTextCenter("BILL OF SUPPLY", margin, contentWidth, currentY + 4, 14, fontBold);
+  const bosWidth = fontBold.widthOfTextAtSize("BILL OF SUPPLY", 14);
+  hLine(margin + (contentWidth - bosWidth) / 2, currentY + 6, bosWidth, 1);
 
-  drawTextCenter(`PAN NO.: TLB01947/00        Mob.: 9801033100`, margin, contentWidth, currentY + 8, 9, font);
-  currentY += 15;
+  // Top Right
+  drawTextRight("Mob.: 9801033100", margin, contentWidth, currentY, 10, fontBold);
 
-  hLine(margin, currentY, contentWidth, 1.5);
-  currentY += 15;
+  // Middle Center
+  currentY += 28;
+  drawTextCenter("M/s. WISHWAS TRADERS", margin, contentWidth, currentY, 26, fontBold, rgb(0.2, 0.1, 0.25));
+
+  // Sub-Middle
+  currentY += 20;
+  const fgmW = fontBold.widthOfTextAtSize("FOOD GRAIN MERCHANT", 10);
+  rect(margin + (contentWidth - fgmW) / 2 - 5, currentY - 10, fgmW + 10, 14, rgb(0.4, 0.2, 0.4));
+  drawTextCenter("FOOD GRAIN MERCHANT", margin, contentWidth, currentY, 10, fontBold, white);
+
+  // Bottom Center
+  currentY += 20;
+  drawTextCenter("GULABBAGH - 854326, PURNEA, STATE - BIHAR, CODE - 10", margin, contentWidth, currentY, 10, font);
+
+  currentY += 25; // Space before Buyer Info
 
   // --- Buyer Info ---
   drawText(`Bill No.: ${invoice.billNo}`, margin, currentY + 10, 10, fontBold);
@@ -220,7 +241,7 @@ export async function generateCommercialInvoicePDF(invoice: ICommercialInvoice):
 
   const dedRows = [
     { key: 'moisture', label: 'Moisture' },
-    { key: 'dhalta', label: 'Dhalta' },
+    { key: 'dhalta', label: 'DD' },
     { key: 'labour', label: 'Labour' },
     { key: 'cutBags', label: 'Cut Bags' },
     { key: 'extra', label: 'Extra' },
@@ -260,18 +281,30 @@ export async function generateCommercialInvoicePDF(invoice: ICommercialInvoice):
 
   // --- Bottom Line ---
   hLine(margin, currentY, contentWidth, 1.5);
-  currentY += 20;
+  currentY += 5; // Reduced from 20 to move everything up
 
   // --- Footer ---
   drawText(`Total Rs. (In Words): `, margin, currentY + 10, 10, fontBold);
-  drawText(`${numberToWords(Math.round(Math.max(0, invoice.finalAmount)))} Only`, margin + 115, currentY + 10, 10, font);
-  drawTextCenter("E. & O. E.", margin + 350, 100, currentY + 10, 10, fontBold);
+  drawText(`${numberToWords(Math.round(Math.max(0, invoice.finalAmount)))}`, margin + 115, currentY + 10, 10, font);
 
-  currentY += 35;
-  drawTextRight(`For: M/s. WISHWAS TRADERS`, margin, contentWidth, currentY, 10, fontBold);
+  currentY += 25;
+  
+  const forText = "For: M/s. WISHWAS TRADERS";
+  const forW = fontBold.widthOfTextAtSize(forText, 10);
+  const forX = margin + contentWidth - forW - 4;
+  
+  const eoeText = "E. & O. E.";
+  const eoeW = fontBold.widthOfTextAtSize(eoeText, 10);
+  const eoeX = forX + (forW - eoeW) / 2;
 
-  currentY += 45;
-  drawTextRight(`Authorised Signatory`, margin, contentWidth, currentY, 10, fontBold);
+  // Draw E. & O. E. centered above the "For: M/s." text
+  drawText(eoeText, eoeX, currentY, 10, fontBold);
+
+  // Gap for signature (slightly reduced)
+  currentY += 35; 
+  
+  // Draw "For: M/s." below the gap
+  drawText(forText, forX, currentY, 10, fontBold);
 
   const pdfBytes = await pdfDoc.save();
   return Buffer.from(pdfBytes);

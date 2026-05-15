@@ -44,10 +44,10 @@ export default async function CommercialCreateInvoicePage({
     totalQuantity: 0,
     totalAmount: 0,
     finalAmount: 0,
-    bankName: "",
-    bankBranch: "",
-    bankAc: "",
-    bankIfsc: "",
+    bankName: "STATE BANK OF INDIA",
+    bankBranch: "BEGAMPUR KHATA BRANCH",
+    bankAc: "40144823342",
+    bankIfsc: "SBIN0015597",
   };
 
   if (editId) {

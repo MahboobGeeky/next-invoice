@@ -3,6 +3,8 @@ import { generateCommercialInvoicePDF } from "@/lib/commercialPdfGenerator";
 import dbConnect from "@/lib/mongoose";
 import { CommercialInvoice, ICommercialInvoice } from "@/lib/models/CommercialInvoice";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -36,6 +38,7 @@ export async function GET(
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="Commercial_Invoice_${invoice.billNo || id}.pdf"`,
+        "Cache-Control": "no-store, max-age=0",
         "Content-Length": String(pdfBuffer.length),
       },
     });
