@@ -1,0 +1,49 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { v4 as uuidv4 } from "uuid";
+import dbConnect from "@/lib/mongoose";
+import { CommercialInvoice } from "@/lib/models/CommercialInvoice";
+import { authOptions } from "@/lib/auth";
+
+export async function GET(req: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session || !(session.user as any)?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const userId = (session.user as any).id;
+  await dbConnect();
+  
+  const invoices = await CommercialInvoice.find({ userId }).sort({ createdAt: -1 }).lean();
+
+  return NextResponse.json(invoices);
+}
+
+export async function POST(req: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session || !(session.user as any)?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const userId = (session.user as any).id;
+  const data = await req.json();
+
+  await dbConnect();
+
+  try {
+    const newInvoice = new CommercialInvoice({
+      ...data,
+      id: uuidv4(),
+      userId,
+    });
+
+    await newInvoice.save();
+    return NextResponse.json(newInvoice, { status: 201 });
+  } catch (err: any) {
+    console.error("DEBUG: Error creating commercial invoice:", err);
+    return NextResponse.json({ 
+      error: "Failed to create commercial invoice", 
+      details: err.message 
+    }, { status: 500 });
+  }
+}

@@ -49,6 +49,18 @@ export default function Header() {
               ▤ View Records
             </Link>
             <Link
+              href="/commercial/create"
+              className={`nav-tab ${pathname === '/commercial/create' ? 'active' : ''}`}
+            >
+              ＋ Create Commercial Invoice
+            </Link>
+            <Link
+              href="/commercial/view"
+              className={`nav-tab ${pathname === '/commercial/view' ? 'active' : ''}`}
+            >
+              ▤ Manage Commercial Invoice
+            </Link>
+            <Link
               href="/profile"
               className={`nav-tab ${pathname === '/profile' ? 'active' : ''}`}
             >
